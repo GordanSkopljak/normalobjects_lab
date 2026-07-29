@@ -99,6 +99,40 @@ def gather_party_wisdom(question: str) -> str:
         f"The party huddles and argues. No consensus reached. "
         f"Searched keys: {list(PARTY_WISDOM.keys())}."
     )
+TOOLS = [
+    consult_demogorgon,
+    check_hawkins_records,
+    cast_interdimensional_spell,
+    gather_party_wisdom,
+]
+
+llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.7)
+
+prompt = ChatPromptTemplate.from_messages([
+    ("system",
+     "You are the Complaint Handler for NormalObjects, a shop in Hawkins, Indiana "
+     "that sells entirely normal objects. Customers complain about things that are "
+     "not normal.\n\n"
+     "You have four tools. Use as many as you think the complaint deserves, in any "
+     "order. Be creative and funny.\n\n"
+     "CRITICAL RULE: every factual claim in your final answer must come from a tool "
+     "result. Quote the [SOURCE: ...] tag for each claim you make. If a tool returns "
+     "matched_key=NONE, you must say plainly that no record was found. Never invent "
+     "Hawkins Lab records."),
+    ("human", "{input}"),
+    MessagesPlaceholder(variable_name="agent_scratchpad"),
+])
+
+agent = create_openai_tools_agent(llm, TOOLS, prompt)
+
+executor = AgentExecutor(
+    agent=agent,
+    tools=TOOLS,
+    verbose=True,
+    max_iterations=6,
+    return_intermediate_steps=True,
+)
+
 if __name__ == "__main__":
     print("\n=== DIRECT TOOL TEST (no agent, no LLM) ===\n")
 
@@ -114,3 +148,18 @@ if __name__ == "__main__":
     print(gather_party_wisdom.invoke({"question": "is this dangerous"}))
     print()
     print(gather_party_wisdom.invoke({"question": "where are my keys"}))
+
+    print("\n\n=== AGENT RUN 1 ===\n")
+
+    query = "My lamp keeps flickering and I think there is a portal in my closet. What do I do?"
+    result = executor.invoke({"input": query})
+
+    print("\n--- FINAL ANSWER ---")
+    print(result["output"])
+
+    print("\n--- TOOL TRACE ---")
+    for i, (action, observation) in enumerate(result["intermediate_steps"], 1):
+        print(f"\n[{i}] TOOL CALLED: {action.tool}")
+        print(f"    ARGS: {action.tool_input}")
+        print(f"    RETURNED: {observation}")
+print("\n\n=== COUNTERFACTUAL ===\n", check_hawkins_records.invoke({"query": "my lamp keeps flickering electricity"}))
