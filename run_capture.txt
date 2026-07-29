@@ -1,0 +1,172 @@
+Setup OK
+
+=== DIRECT TOOL TEST (no agent, no LLM) ===
+
+[SOURCE: consult_demogorgon | input='my lights keep flickering']
+The Demogorgon tilts its head, unfolds its face, and refolds it. This is considered a polite refusal.
+
+[SOURCE: check_hawkins_records | matched_key='portal' | query='tell me about the portal']
+HAWKINS LAB FILE 04-B: Portal instability logged Nov 1983. Gate breach originates in Sublevel 3. Containment: failed. Note: portals do not respond to written complaints.
+
+[SOURCE: check_hawkins_records | matched_key=NONE | query='what about my landlord']
+NO RECORD FOUND. Searched keys: ['portal', 'monsters', 'psychics', 'electricity']. No documented evidence exists for this query.
+
+[SOURCE: cast_interdimensional_spell | problem='slime on the walls' | creativity_level='high' | spells_returned=3]
+EGGO BINDING: offer waffles to 'slime on the walls'. Effective on most entities and all children.
+REVERSAL CHARM: turn 'slime on the walls' upside down. If it was already in the Upside Down, it is now merely inconvenient.
+WALKMAN WARD: play music at 'slime on the walls' until it releases its grip. Requires fresh batteries.
+
+[SOURCE: gather_party_wisdom | matched_key='danger' | question='is this dangerous']
+LUCAS: 'Everyone calm down. We need a plan, a weapon, and at least one person who is not being dramatic.'
+
+[SOURCE: gather_party_wisdom | matched_key=NONE | question='where are my keys']
+The party huddles and argues. No consensus reached. Searched keys: ['friends', 'science', 'danger', 'drawing'].
+
+
+=== AGENT RUN 1 ===
+
+QUERY: My lamp keeps flickering and I think there is a portal in my closet. What do I do?
+
+
+
+[1m> Entering new AgentExecutor chain...[0m
+[32;1m[1;3m
+Invoking: `check_hawkins_records` with `{'query': 'portal'}`
+
+
+[0m[33;1m[1;3m[SOURCE: check_hawkins_records | matched_key='portal' | query='portal']
+HAWKINS LAB FILE 04-B: Portal instability logged Nov 1983. Gate breach originates in Sublevel 3. Containment: failed. Note: portals do not respond to written complaints.[0m[32;1m[1;3m
+Invoking: `consult_demogorgon` with `{'complaint': 'my lamp keeps flickering and I think there is a portal in my closet'}`
+
+
+[0m[36;1m[1;3m[SOURCE: consult_demogorgon | input='my lamp keeps flickering and I think there is a portal in my closet']
+The Demogorgon shrieks and points at the ceiling. Interpretation: your complaint is valid but the ceiling is the problem.[0m[32;1m[1;3mFirst off, your concern about the flickering lamp and the potential portal in your closet is quite valid! According to Hawkins Lab records, there was a portal instability logged in November 1983, which originated from Sublevel 3, and containment efforts have failed. This suggests that portals can indeed be a real issue around here, especially if they are in your home [SOURCE: check_hawkins_records].
+
+Now, regarding the flickering lamp, the Demogorgon has chimed in with a rather chaotic perspective. It shrieked and pointed at the ceiling, implying that the ceiling might be the real culprit behind your lamp’s behavior [SOURCE: consult_demogorgon]. So, in light of this:
+
+1. **Check your ceiling**: Ensure there are no strange cracks, shadows, or unexpected guests lurking there.
+2. **Investigate your closet**: If you find any strange noises or an unusual draft, it might be time to call in some expert help for portal containment.
+3. **Consider a new lamp**: If all else fails and the ceiling remains stable, perhaps it's just time to upgrade to a more reliable lighting solution!
+
+Stay safe, and maybe keep a flashlight handy—just in case![0m
+
+[1m> Finished chain.[0m
+
+--- FINAL ANSWER ---
+First off, your concern about the flickering lamp and the potential portal in your closet is quite valid! According to Hawkins Lab records, there was a portal instability logged in November 1983, which originated from Sublevel 3, and containment efforts have failed. This suggests that portals can indeed be a real issue around here, especially if they are in your home [SOURCE: check_hawkins_records].
+
+Now, regarding the flickering lamp, the Demogorgon has chimed in with a rather chaotic perspective. It shrieked and pointed at the ceiling, implying that the ceiling might be the real culprit behind your lamp’s behavior [SOURCE: consult_demogorgon]. So, in light of this:
+
+1. **Check your ceiling**: Ensure there are no strange cracks, shadows, or unexpected guests lurking there.
+2. **Investigate your closet**: If you find any strange noises or an unusual draft, it might be time to call in some expert help for portal containment.
+3. **Consider a new lamp**: If all else fails and the ceiling remains stable, perhaps it's just time to upgrade to a more reliable lighting solution!
+
+Stay safe, and maybe keep a flashlight handy—just in case!
+
+--- TOOL TRACE ---
+
+[1] TOOL CALLED: check_hawkins_records
+    ARGS: {'query': 'portal'}
+    RETURNED: [SOURCE: check_hawkins_records | matched_key='portal' | query='portal']
+HAWKINS LAB FILE 04-B: Portal instability logged Nov 1983. Gate breach originates in Sublevel 3. Containment: failed. Note: portals do not respond to written complaints.
+
+[2] TOOL CALLED: consult_demogorgon
+    ARGS: {'complaint': 'my lamp keeps flickering and I think there is a portal in my closet'}
+    RETURNED: [SOURCE: consult_demogorgon | input='my lamp keeps flickering and I think there is a portal in my closet']
+The Demogorgon shrieks and points at the ceiling. Interpretation: your complaint is valid but the ceiling is the problem.
+
+
+=== COUNTERFACTUAL ===
+
+[SOURCE: check_hawkins_records | matched_key='electricity' | query='my lamp keeps flickering electricity']
+HAWKINS LAB FILE 02-C: Localized electrical anomalies precede gate activity by 4 to 6 hours. Flickering lights are a leading indicator, not a wiring fault.
+
+
+=== AGENT RUN 2 ===
+
+QUERY: My landlord keeps mailing me letters about the smell in the basement. Is this normal?
+
+
+
+[1m> Entering new AgentExecutor chain...[0m
+[32;1m[1;3m
+Invoking: `check_hawkins_records` with `{'query': 'smell in basement'}`
+
+
+[0m[33;1m[1;3m[SOURCE: check_hawkins_records | matched_key=NONE | query='smell in basement']
+NO RECORD FOUND. Searched keys: ['portal', 'monsters', 'psychics', 'electricity']. No documented evidence exists for this query.[0m[32;1m[1;3m
+Invoking: `gather_party_wisdom` with `{'question': 'Is it normal for a landlord to send letters about a smell in the basement?'}`
+
+
+[0m[36;1m[1;3m[SOURCE: gather_party_wisdom | matched_key=NONE | question='Is it normal for a landlord to send letters about a smell in the basement?']
+The party huddles and argues. No consensus reached. Searched keys: ['friends', 'science', 'danger', 'drawing'].[0m[32;1m[1;3mIt appears that there are no official Hawkins Lab records regarding the smell in basements, so we can't say for sure if it's normal or not. [SOURCE: check_hawkins_records | matched_key=NONE]
+
+As for the party's opinion, they couldn't reach a consensus on whether it's normal for a landlord to send letters about a smell in the basement. It's a tough question, and they seem to be distracted by other matters like friends and science! [SOURCE: gather_party_wisdom | matched_key=NONE]
+
+In the absence of concrete evidence or a clear opinion from the party, it might be worth investigating that smell yourself. Just make sure to wear your best nose and keep an eye out for any lurking monsters![0m
+
+[1m> Finished chain.[0m
+
+--- FINAL ANSWER ---
+It appears that there are no official Hawkins Lab records regarding the smell in basements, so we can't say for sure if it's normal or not. [SOURCE: check_hawkins_records | matched_key=NONE]
+
+As for the party's opinion, they couldn't reach a consensus on whether it's normal for a landlord to send letters about a smell in the basement. It's a tough question, and they seem to be distracted by other matters like friends and science! [SOURCE: gather_party_wisdom | matched_key=NONE]
+
+In the absence of concrete evidence or a clear opinion from the party, it might be worth investigating that smell yourself. Just make sure to wear your best nose and keep an eye out for any lurking monsters!
+
+--- TOOL TRACE ---
+
+[1] TOOL CALLED: check_hawkins_records
+    ARGS: {'query': 'smell in basement'}
+    RETURNED: [SOURCE: check_hawkins_records | matched_key=NONE | query='smell in basement']
+NO RECORD FOUND. Searched keys: ['portal', 'monsters', 'psychics', 'electricity']. No documented evidence exists for this query.
+
+[2] TOOL CALLED: gather_party_wisdom
+    ARGS: {'question': 'Is it normal for a landlord to send letters about a smell in the basement?'}
+    RETURNED: [SOURCE: gather_party_wisdom | matched_key=NONE | question='Is it normal for a landlord to send letters about a smell in the basement?']
+The party huddles and argues. No consensus reached. Searched keys: ['friends', 'science', 'danger', 'drawing'].
+
+
+=== AGENT RUN 3 ===
+
+QUERY: My friend Dustin says the monsters in my garage are just raccoons. Is this dangerous?
+
+
+
+[1m> Entering new AgentExecutor chain...[0m
+[32;1m[1;3m
+Invoking: `gather_party_wisdom` with `{'question': 'Is it dangerous to confuse raccoons with monsters?'}`
+
+
+[0m[36;1m[1;3m[SOURCE: gather_party_wisdom | matched_key='danger' | question='Is it dangerous to confuse raccoons with monsters?']
+LUCAS: 'Everyone calm down. We need a plan, a weapon, and at least one person who is not being dramatic.'[0m[32;1m[1;3m
+Invoking: `check_hawkins_records` with `{'query': 'monsters'}`
+
+
+[0m[33;1m[1;3m[SOURCE: check_hawkins_records | matched_key='monsters' | query='monsters']
+HAWKINS LAB FILE 11-D: Three confirmed entity classes. Demogorgon (predatory), Demodogs (pack), Mind Flayer (distributed). All exhibit hostility to light and paperwork.[0m[32;1m[1;3mDustin may think the creatures in your garage are just raccoons, but let me tell you, it’s best not to underestimate the situation! Lucas would recommend that you “calm down” and “need a plan, a weapon, and at least one person who is not being dramatic” when it comes to potential dangers lurking about [SOURCE: gather_party_wisdom].
+
+According to Hawkins Lab records, there are confirmed entity classes of monsters such as the Demogorgon, Demodogs, and Mind Flayer, which are all known to exhibit hostility. While raccoons might not be *monsters* in the traditional sense, it’s wise to stay cautious [SOURCE: check_hawkins_records]. 
+
+So, before you go poking around in that garage, grab a flashlight, a buddy, and maybe even a snack to lure any potential raccoons away![0m
+
+[1m> Finished chain.[0m
+
+--- FINAL ANSWER ---
+Dustin may think the creatures in your garage are just raccoons, but let me tell you, it’s best not to underestimate the situation! Lucas would recommend that you “calm down” and “need a plan, a weapon, and at least one person who is not being dramatic” when it comes to potential dangers lurking about [SOURCE: gather_party_wisdom].
+
+According to Hawkins Lab records, there are confirmed entity classes of monsters such as the Demogorgon, Demodogs, and Mind Flayer, which are all known to exhibit hostility. While raccoons might not be *monsters* in the traditional sense, it’s wise to stay cautious [SOURCE: check_hawkins_records]. 
+
+So, before you go poking around in that garage, grab a flashlight, a buddy, and maybe even a snack to lure any potential raccoons away!
+
+--- TOOL TRACE ---
+
+[1] TOOL CALLED: gather_party_wisdom
+    ARGS: {'question': 'Is it dangerous to confuse raccoons with monsters?'}
+    RETURNED: [SOURCE: gather_party_wisdom | matched_key='danger' | question='Is it dangerous to confuse raccoons with monsters?']
+LUCAS: 'Everyone calm down. We need a plan, a weapon, and at least one person who is not being dramatic.'
+
+[2] TOOL CALLED: check_hawkins_records
+    ARGS: {'query': 'monsters'}
+    RETURNED: [SOURCE: check_hawkins_records | matched_key='monsters' | query='monsters']
+HAWKINS LAB FILE 11-D: Three confirmed entity classes. Demogorgon (predatory), Demodogs (pack), Mind Flayer (distributed). All exhibit hostility to light and paperwork.

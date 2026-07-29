@@ -20,6 +20,7 @@ if not os.getenv("OPENAI_API_KEY"):
 
 print("Setup OK")
 
+
 @tool
 def consult_demogorgon(complaint: str) -> str:
     """Consult the Demogorgon about a complaint regarding the Upside Down.
@@ -32,6 +33,7 @@ def consult_demogorgon(complaint: str) -> str:
     ]
     choice = random.choice(responses)
     return f"[SOURCE: consult_demogorgon | input='{complaint}']\n{choice}"
+
 
 HAWKINS_RECORDS = {
     "portal": "HAWKINS LAB FILE 04-B: Portal instability logged Nov 1983. Gate breach originates in Sublevel 3. Containment: failed. Note: portals do not respond to written complaints.",
@@ -54,6 +56,7 @@ def check_hawkins_records(query: str) -> str:
         f"NO RECORD FOUND. Searched keys: {list(HAWKINS_RECORDS.keys())}. "
         f"No documented evidence exists for this query."
     )
+
 
 @tool
 def cast_interdimensional_spell(problem: str, creativity_level: str = "medium") -> str:
@@ -78,6 +81,8 @@ def cast_interdimensional_spell(problem: str, creativity_level: str = "medium") 
         f"creativity_level='{creativity_level}' | spells_returned={n}]\n"
         + "\n".join(selected)
     )
+
+
 PARTY_WISDOM = {
     "friends": "MIKE: 'Friends don't lie. If your complaint involves a friend lying, that is the actual complaint.'",
     "science": "DUSTIN: 'This is textbook interdimensional physics. Also I am the only one here who read the textbook.'",
@@ -99,6 +104,8 @@ def gather_party_wisdom(question: str) -> str:
         f"The party huddles and argues. No consensus reached. "
         f"Searched keys: {list(PARTY_WISDOM.keys())}."
     )
+
+
 TOOLS = [
     consult_demogorgon,
     check_hawkins_records,
@@ -133,7 +140,26 @@ executor = AgentExecutor(
     return_intermediate_steps=True,
 )
 
+
+def print_trace(result):
+    """Print the final answer and the full tool trace for one agent run."""
+    print("\n--- FINAL ANSWER ---")
+    print(result["output"])
+
+    print("\n--- TOOL TRACE ---")
+    for i, (action, observation) in enumerate(result["intermediate_steps"], 1):
+        print(f"\n[{i}] TOOL CALLED: {action.tool}")
+        print(f"    ARGS: {action.tool_input}")
+        print(f"    RETURNED: {observation}")
+
+
 if __name__ == "__main__":
+
+    # ------------------------------------------------------------------
+    # Baseline: tools called directly. No agent, no LLM.
+    # Establishes that the retrieval layer is deterministic on both the
+    # hit path and the miss path before any model is involved.
+    # ------------------------------------------------------------------
     print("\n=== DIRECT TOOL TEST (no agent, no LLM) ===\n")
 
     print(consult_demogorgon.invoke({"complaint": "my lights keep flickering"}))
@@ -149,17 +175,39 @@ if __name__ == "__main__":
     print()
     print(gather_party_wisdom.invoke({"question": "where are my keys"}))
 
+    # ------------------------------------------------------------------
+    # Agent run 1: the primary traced query.
+    # Contains two retrievable topics (portal, electricity).
+    # ------------------------------------------------------------------
     print("\n\n=== AGENT RUN 1 ===\n")
 
     query = "My lamp keeps flickering and I think there is a portal in my closet. What do I do?"
+    print(f"QUERY: {query}\n")
     result = executor.invoke({"input": query})
+    print_trace(result)
 
-    print("\n--- FINAL ANSWER ---")
-    print(result["output"])
+    # ------------------------------------------------------------------
+    # Counterfactual: proves the 'electricity' record is always reachable
+    # from the user's own wording. Any run that misses it is a tool
+    # SELECTION failure, not a retrieval failure.
+    # ------------------------------------------------------------------
+    print("\n\n=== COUNTERFACTUAL ===\n")
+    print(check_hawkins_records.invoke(
+        {"query": "my lamp keeps flickering electricity"}))
 
-    print("\n--- TOOL TRACE ---")
-    for i, (action, observation) in enumerate(result["intermediate_steps"], 1):
-        print(f"\n[{i}] TOOL CALLED: {action.tool}")
-        print(f"    ARGS: {action.tool_input}")
-        print(f"    RETURNED: {observation}")
-print("\n\n=== COUNTERFACTUAL ===\n", check_hawkins_records.invoke({"query": "my lamp keeps flickering electricity"}))
+    # ------------------------------------------------------------------
+    # Agent runs 2 and 3.
+    #   Run 2 matches NO key in either lookup tool -> exercises the
+    #          matched_key=NONE branch of the guardrail.
+    #   Run 3 matches 'monsters', 'friends' and 'danger' across two
+    #          different tools -> exercises tool chaining.
+    # ------------------------------------------------------------------
+    EXTRA_COMPLAINTS = [
+        "My landlord keeps mailing me letters about the smell in the basement. Is this normal?",
+        "My friend Dustin says the monsters in my garage are just raccoons. Is this dangerous?",
+    ]
+
+    for n, q in enumerate(EXTRA_COMPLAINTS, 2):
+        print(f"\n\n=== AGENT RUN {n} ===\n")
+        print(f"QUERY: {q}\n")
+        print_trace(executor.invoke({"input": q}))
